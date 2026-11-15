@@ -1,11 +1,11 @@
-# dshMobile 1.1.2
+# DSH-Mobile 1.1.2
 
 基于扫码浏览器重新打包的独立 App，并为 DSH 页面增加了**主动余额查询标题栏**。
 
 
 
 
-![dshMobile Logo](docs/Whale.png)
+![dshMobile Logo](docs/logo.png)
 
 ## 直接安装
 
