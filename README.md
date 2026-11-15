@@ -2,13 +2,10 @@
 
 基于扫码浏览器重新打包的独立 App，并为 DSH 页面增加了**主动余额查询标题栏**。
 
-- 新包名：`com.dshmobile.app`（与旧版 `com.scanbrowser.lite` 并存）
-- 新签名密钥
-- 新图标：完整 `鲸鱼娘.png` 降分辨率、不裁切
-- 保留扫码、相机对焦、手电筒和无控件浏览器
-- 余额标题栏只在 DSH 配对页显示
 
-![dshMobile logo](docs/logo.png)
+
+
+![dshMobile Logo](docs/Whale.png)
 
 ## 直接安装
 

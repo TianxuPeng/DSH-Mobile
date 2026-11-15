@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <!-- dsh-mobile LAN gateway uses a per-installation private CA. -->
+            <certificates src="@raw/dshm_ca" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>

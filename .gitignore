@@ -1,0 +1,15 @@
+.gradle/
+.gradle-home/
+build/
+local.properties
+*.iml
+.idea/
+app/build/
+dist/*.apk
+dist/*.zip
+keystore.properties
+keystore/*.jks
+
+dist/mapping-*.txt
+
+dist/mapping-*.txt

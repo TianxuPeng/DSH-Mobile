@@ -1,0 +1,95 @@
+dshMobile 1.1.2 - verification record
+Generated: 2026-11-15 (Asia/Shanghai)
+
+APK
+path: dshmobile/dist/dshMobile-1.1.2.apk
+also copied to: dshMobile-1.1.2.apk (workspace root)
+bytes: 1180926
+sha256: b0588a1bc7652178e3700d2eac66b6deab0bcccc7646379127a251e93f67f22d
+package: com.dshmobile.app
+versionCode: 4
+versionName: 1.1.2
+label: dshMobile
+minSdk: 23
+targetSdk: 34
+
+SIGNING
+v1: true
+v2: true
+certificate DN: CN=dshMobile, OU=Local Apps, O=dshMobile, L=Local, ST=Local, C=CN
+certificate SHA-256: aca1f557a1170ac52c45cceb1839e68729a40f90676db9f60539d0f9dc7dca5f
+zipalign -c 4: exit 0
+
+INTERNET BALANCE FIX
+- Added a dsh-mobile host extension:
+  %APPDATA%\dsh-desktop\harness\mobile-access\extensions\balance-title\
+- Local dsh-mobile admin reports:
+  {"id":"balance-title","name":"dshMobile 余额标题栏","mode":"in-process","state":"ready"}
+- Route used by the APK:
+  GET /mobile-access/extensions/balance-title/routes/refresh
+- The route is served by the dsh-mobile gateway itself, on the same authenticated
+  origin as the mobile page. It therefore does not depend on the 43130 LAN port.
+- The extension calls dsh-pet loopback endpoints:
+  POST http://127.0.0.1:43129/dsh-pet-7340/balance
+  GET  http://127.0.0.1:43129/dsh-pet-7340/state
+- The extension route returns 401 without the paired mobile session, as expected.
+- App query order: balance-title extension -> dsh-pet page route -> LAN 43130 bridge.
+
+SHIPPED TESTS (13)
+com.dshmobile.app.BrowserActivitySmokeTest: 2 passed
+com.dshmobile.app.DshPageTest: 4 passed
+com.dshmobile.app.QrDecoderTest: 4 passed
+com.dshmobile.app.ScannerActivitySmokeTest: 1 passed
+com.dshmobile.app.UrlPolicyTest: 2 passed
+
+LIVE / LOGIC CHECKS
+1) Extension host handler against real dsh-pet:
+   - status 200, application/json
+   - CNY 26.38, tier idle.
+2) Final App JavaScript with the extension JSON:
+   - The exact JS template was extracted from BrowserActivity source.
+   - The extension route returned CNY 26.48 / idle in the mocked fetch.
+   - The app's DshMobileBalance callback received the correct payload.
+3) 1.1.1 native fallback (fallback code unchanged in 1.1.2):
+   - JS timeout -> LAN bridge POST /refresh -> ¥27.43 / 谷.
+4) App JavaScript requires no 43130 port when the extension route succeeds.
+
+ANDROID LINT
+errors: 0
+warnings: 10
+  - networkSecurityConfig is API 24+ while minSdk is 23
+  - InsecureBaseConfiguration (cleartext for DSH HTTP pages/bridge)
+  - 2 x MergeRootFrame, 1 x UselessParent
+  - 5 x IconLauncherShape (intentional full illustration)
+
+DSH BALANCE BRIDGE PLUGIN (GitHub package)
+path: dsh-balance-bridge-plugin/
+package: dsh-balance-bridge-1.0.0.tgz (workspace root)
+bytes: 11710
+sha256: a185b68657dc58b918b3b44adb7530848c13873990c9cd8cf30181025cebd30e
+- DSH host plugin: passive 43130 LAN fallback.
+- Includes mobile-extension/balance-title (the internet route).
+- 6 unit tests passed:
+  tier calculation, token enforcement, health/balance protection,
+  real mock refresh, upstream failure, ctx.effect lifecycle.
+- The DSH host plugin itself is NOT installed in the running profile;
+  the standalone 43130 bridge remains active.
+- The dsh-mobile balance-title extension IS installed and ready.
+- Actual DSH plugin-manager loading was not executed.
+
+NOT TESTED ON HARDWARE
+- Real Android phone install/paired session hitting the extension route over
+  the internet. The extension is loaded and its handler is tested, but no
+  authenticated mobile test client was available.
+- Camera scanning.
+- LAN firewall path from a second physical device.
+- DSH plugin loading through the actual plugin manager.
+
+CONNECTION BOUNDARY
+- The fix requires the dsh-mobile full mobile page (LAN or remote/internet).
+- The DSH built-in 43127 simple page has no dsh-mobile extension routes and
+  cannot use this internet path; it remains LAN-fallback only.
+
+DSH DESKTOP
+- No DSH source/app.asar or dsh-pet files were modified.
+- The extension is a supported local dsh-mobile extension under mobile-access.

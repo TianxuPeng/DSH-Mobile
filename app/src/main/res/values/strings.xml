@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">dshMobile</string>
+
+    <string name="scanner_overline">SCAN · OPEN</string>
+    <string name="scanner_title">扫码浏览</string>
+    <string name="scanner_subtitle">将二维码放入框内，自动打开网页</string>
+    <string name="scanner_subtitle_starting">正在准备相机…</string>
+    <string name="scanner_subtitle_permission">授权相机后即可扫码</string>
+    <string name="scanner_hint">扫到即开 · 无地址栏 · 无工具栏</string>
+
+    <string name="torch_on">手电筒</string>
+    <string name="torch_off">关闭手电</string>
+
+    <string name="permission_title">需要相机权限</string>
+    <string name="permission_body">相机仅用于识别二维码，画面不会保存或上传。</string>
+    <string name="permission_body_denied">相机权限已被拒绝。请在系统设置中允许相机权限，然后返回此页面。</string>
+    <string name="permission_grant">允许使用相机</string>
+    <string name="permission_retry">重新授权</string>
+    <string name="permission_settings">打开系统设置</string>
+
+    <string name="camera_error_title">相机无法启动</string>
+    <string name="camera_error_body">请确认没有其他应用占用相机，然后重试。</string>
+    <string name="camera_retry">重试</string>
+
+    <string name="invalid_qr">这个二维码不是网页链接</string>
+    <string name="invalid_url">仅支持 http / https 网页链接</string>
+    <string name="scheme_blocked">已拦截非网页链接</string>
+    <string name="torch_unavailable">此设备不支持手电筒</string>
+
+    <string name="browser_error_title">网页无法打开</string>
+    <string name="browser_error_unknown">网络连接失败，或网站暂时不可用。</string>
+    <string name="browser_error_host">找不到该网站，请检查链接或网络连接。</string>
+    <string name="browser_error_connect">无法连接到网站，请检查网络连接。</string>
+    <string name="browser_error_timeout">连接超时，请稍后重试。</string>
+    <string name="browser_error_ssl_handshake">安全连接建立失败。</string>
+    <string name="browser_error_unsupported">不支持该链接。</string>
+    <string name="browser_error_retry">重试</string>
+    <string name="browser_back_to_scan">返回扫码</string>
+    <string name="download_not_supported">当前版本暂不支持下载文件</string>
+    <string name="ssl_error">网站证书无效，已阻止访问。</string>
+    <string name="render_gone">网页进程异常退出，请重试。</string>
+
+    <string name="js_dialog_title">网页提示</string>
+    <string name="js_confirm_ok">确定</string>
+    <string name="js_confirm_cancel">取消</string>
+    <string name="js_prompt_hint">请输入内容</string>
+    <string name="file_chooser_unavailable">无法打开文件选择器</string>
+
+    <string name="balance_label">余额</string>
+    <string name="balance_unknown">--</string>
+    <string name="balance_accessibility">余额 %1$s，%2$s时段</string>
+</resources>

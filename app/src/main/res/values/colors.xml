@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#070D14</color>
+    <color name="accent">#5EEAD4</color>
+    <color name="text_primary">#F1F5F9</color>
+    <color name="text_secondary">#9BAAB9</color>
+    <color name="text_dim">#66788A</color>
+    <color name="ink">#04221D</color>
+    <color name="black">#000000</color>
+    <color name="peak">#FCD34D</color>
+    <color name="valley">#5EEAD4</color>
+</resources>
