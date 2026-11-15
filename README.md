@@ -5,7 +5,9 @@
 
 
 
-![dshMobile Logo](docs/logo.png)
+<p align="center">
+  <img src="docs/logo.png" alt="dshMobile Logo" width="180">
+</p>
 
 ## 直接安装
 
