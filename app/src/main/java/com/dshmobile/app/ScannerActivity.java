@@ -67,6 +67,8 @@ public final class ScannerActivity extends ComponentActivity {
     private ScanOverlayView scanOverlay;
     private TextView scannerSubtitle;
     private Button torchButton;
+    private Button continueButton;
+    private PairingStore pairingStore;
     private LinearLayout panel;
     private TextView panelTitle;
     private TextView panelBody;
@@ -106,6 +108,10 @@ public final class ScannerActivity extends ComponentActivity {
         scanOverlay = findViewById(R.id.scan_overlay);
         scannerSubtitle = findViewById(R.id.scanner_subtitle);
         torchButton = findViewById(R.id.torch_button);
+        continueButton = findViewById(R.id.continue_button);
+        pairingStore = new PairingStore(this);
+        continueButton.setOnClickListener(view -> openSavedPairing());
+        updateContinueButton();
         panel = findViewById(R.id.panel);
         panelTitle = findViewById(R.id.panel_title);
         panelBody = findViewById(R.id.panel_body);
@@ -141,6 +147,7 @@ public final class ScannerActivity extends ComponentActivity {
     protected void onResume() {
         super.onResume();
         resumed = true;
+        updateContinueButton();
 
         if (openingBrowser) {
             openingBrowser = false;
@@ -569,10 +576,41 @@ public final class ScannerActivity extends ComponentActivity {
         lastOpenedPayload = payload;
         scanOverlay.setScanning(false);
         previewView.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
-        Intent intent = new Intent(this, BrowserActivity.class);
-        intent.putExtra(BrowserActivity.EXTRA_URL, url);
+        PairingLink pairing = PairingLink.parse(url);
+        Intent intent = new Intent(this, pairing == null ? BrowserActivity.class : PairingActivity.class);
+        if (pairing == null) {
+            intent.putExtra(BrowserActivity.EXTRA_URL, url);
+        } else {
+            intent.putExtra(PairingActivity.EXTRA_PAIR_URL, url);
+        }
         startActivity(intent);
         overridePendingTransition(0, 0);
+    }
+
+    private void openSavedPairing() {
+        if (isFinishing() || isDestroyed() || openingBrowser) {
+            return;
+        }
+        PairingRecord record = pairingStore == null ? null : pairingStore.load();
+        if (record == null) {
+            updateContinueButton();
+            return;
+        }
+        openingBrowser = true;
+        awaitQrClear = false;
+        scanOverlay.setScanning(false);
+        Intent intent = new Intent(this, BrowserActivity.class);
+        intent.putExtra(BrowserActivity.EXTRA_URL, record.origin + "/");
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
+
+    private void updateContinueButton() {
+        if (continueButton == null) {
+            return;
+        }
+        PairingRecord record = pairingStore == null ? null : pairingStore.load();
+        continueButton.setVisibility(record == null ? View.GONE : View.VISIBLE);
     }
 
     /**

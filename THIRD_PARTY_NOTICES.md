@@ -48,13 +48,13 @@ WebView 的实现与版本由设备厂商和系统更新决定，本应用不修
 
 Apache License 2.0 允许在遵守许可证条件的前提下使用、修改和再分发软件，包括保留版权和许可证声明。完整条款请以 https://www.apache.org/licenses/LICENSE-2.0 为准。
 
-## dsh-pet
+## dsh-mobile
 
-- 组件：本机已安装的 dsh-pet 0.4.9 插件（未打包进 APK，也未修改其代码）。
-- 用途：dshMobile Balance Bridge 调用其公开的本地 `/balance` 与 `/state` 路由来获取 DeepSeek 余额；峰谷时段口径也参照 dsh-pet。
-- 版权：dsh-pet authors。
-- 许可证：代码 MIT；其角色素材另有非商用/署名限制。本应用不打包 dsh-pet 的任何角色素材。
-- 项目主页：https://github.com/PC2005-cloud/dsh-pet
+- 项目：dsh-mobile（作者：saya-ch）。
+- 用途：本 App 的二维码配对协议（`/mobile-access/pair`、`/mobile-access/auth/native-pair`、CA 固定与配对 Cookie）参考该项目公开的 Android 实现，以兼容官方 App 的二维码。
+- 许可证：Apache License 2.0。
+- 项目主页：https://github.com/saya-ch/dsh-mobile
+- 本 App 未打包 dsh-mobile 的 APK、图标或前端素材，也未修改其源码。
 
 ## Node.js（仅电脑端桥）
 

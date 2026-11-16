@@ -1,4 +1,13 @@
-C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\main\AndroidManifest.xml:24: Warning: Attribute networkSecurityConfig is only used in API level 24 and higher (current min is 23) [UnusedAttribute]
+C:\Users\Administrator\AppData\Local\Temp\dsh-FDWIZl\dshmobile-build\app\src\main\java\com\dshmobile\app\PairingStore.java:85: Warning: Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background [ApplySharedPref]
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().remove(KEY_RECORD).commit();
+                                                                                            ~~~~~~~~
+
+   Explanation for issues of type "ApplySharedPref":
+   Consider using apply() instead of commit on shared preferences. Whereas
+   commit blocks and writes its data to persistent storage immediately, apply
+   will handle it in the background.
+
+C:\Users\Administrator\AppData\Local\Temp\dsh-FDWIZl\dshmobile-build\app\src\main\AndroidManifest.xml:24: Warning: Attribute networkSecurityConfig is only used in API level 24 and higher (current min is 23) [UnusedAttribute]
         android:networkSecurityConfig="@xml/network_security_config"
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -19,7 +28,7 @@ C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\mai
    can be unused too, such as the new <tag> element in layouts introduced in
    API 21.
 
-C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\main\res\xml\network_security_config.xml:3: Warning: Insecure Base Configuration [InsecureBaseConfiguration]
+C:\Users\Administrator\AppData\Local\Temp\dsh-FDWIZl\dshmobile-build\app\src\main\res\xml\network_security_config.xml:3: Warning: Insecure Base Configuration [InsecureBaseConfiguration]
     <base-config cleartextTrafficPermitted="true">
                                             ~~~~
 
@@ -32,10 +41,10 @@ C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\mai
    https://goo.gle/InsecureBaseConfiguration
    https://developer.android.com/preview/features/security-config.html
 
-C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\main\res\layout\activity_browser.xml:2: Warning: This <FrameLayout> can be replaced with a <merge> tag [MergeRootFrame]
+C:\Users\Administrator\AppData\Local\Temp\dsh-FDWIZl\dshmobile-build\app\src\main\res\layout\activity_browser.xml:2: Warning: This <FrameLayout> can be replaced with a <merge> tag [MergeRootFrame]
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 ^
-C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\main\res\layout\activity_scanner.xml:2: Warning: This <FrameLayout> can be replaced with a <merge> tag [MergeRootFrame]
+C:\Users\Administrator\AppData\Local\Temp\dsh-FDWIZl\dshmobile-build\app\src\main\res\layout\activity_scanner.xml:2: Warning: This <FrameLayout> can be replaced with a <merge> tag [MergeRootFrame]
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 ^
 
@@ -47,7 +56,7 @@ C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\mai
 
    https://android-developers.googleblog.com/2009/03/android-layout-tricks-3-optimize-by.html
 
-C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\main\res\layout\activity_browser.xml:7: Warning: This LinearLayout layout or its FrameLayout parent is possibly unnecessary [UselessParent]
+C:\Users\Administrator\AppData\Local\Temp\dsh-FDWIZl\dshmobile-build\app\src\main\res\layout\activity_browser.xml:7: Warning: This LinearLayout layout or its FrameLayout parent is possibly unnecessary [UselessParent]
     <LinearLayout
      ~~~~~~~~~~~~
 
@@ -57,11 +66,11 @@ C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\mai
    children moved directly into the parent for a flatter and more efficient
    layout hierarchy.
 
-C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\main\res\mipmap-hdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
-C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\main\res\mipmap-mdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
-C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\main\res\mipmap-xhdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
-C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\main\res\mipmap-xxhdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
-C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\main\res\mipmap-xxxhdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+C:\Users\Administrator\AppData\Local\Temp\dsh-FDWIZl\dshmobile-build\app\src\main\res\mipmap-hdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+C:\Users\Administrator\AppData\Local\Temp\dsh-FDWIZl\dshmobile-build\app\src\main\res\mipmap-mdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+C:\Users\Administrator\AppData\Local\Temp\dsh-FDWIZl\dshmobile-build\app\src\main\res\mipmap-xhdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+C:\Users\Administrator\AppData\Local\Temp\dsh-FDWIZl\dshmobile-build\app\src\main\res\mipmap-xxhdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
+C:\Users\Administrator\AppData\Local\Temp\dsh-FDWIZl\dshmobile-build\app\src\main\res\mipmap-xxxhdpi\ic_launcher.png: Warning: Launcher icons should not fill every pixel of their square region; see the design guide for details [IconLauncherShape]
 
    Explanation for issues of type "IconLauncherShape":
    According to the Android Design Guide
@@ -73,4 +82,4 @@ C:\Users\Administrator\AppData\Local\Temp\dsh-XpgRbf\dshmobile-build\app\src\mai
    The unique silhouette implies that your launcher icon should not be a
    filled square.
 
-0 errors, 10 warnings
+0 errors, 11 warnings

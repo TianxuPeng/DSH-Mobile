@@ -28,6 +28,12 @@
         tools:ignore="IconLauncherShape">
 
         <activity
+            android:name=".PairingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.DshMobile"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".BrowserActivity"
             android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout|keyboardHidden|uiMode"
             android:exported="false"

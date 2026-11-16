@@ -50,6 +50,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.cert.X509Certificate;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -63,6 +64,7 @@ import java.util.concurrent.Executors;
 public final class BrowserActivity extends ComponentActivity {
 
     public static final String EXTRA_URL = "extra_url";
+    public static final String EXTRA_SESSION_READY = "extra_session_ready";
 
     private static final int REQUEST_FILE_CHOOSER = 5201;
     private static final String BALANCE_TOKEN = "5cecb92087ef557a70d52d9be55c226e";
@@ -121,7 +123,11 @@ public final class BrowserActivity extends ComponentActivity {
     private AlertDialog jsDialog;
     private Handler balanceHandler;
     private ExecutorService balanceExecutor;
+    private ExecutorService pairingExecutor;
     private String dshOrigin;
+    private String pairedOrigin;
+    private byte[] pinnedCa;
+    private PairingRecord pairingRecord;
     private String lastUrl;
     private String previousPageUrl;
     private long lastBlockedToastAt;
@@ -169,6 +175,23 @@ public final class BrowserActivity extends ComponentActivity {
         }
         lastUrl = url;
 
+        PairingLink pairingLink = PairingLink.parse(url);
+        if (pairingLink != null) {
+            Intent pairingIntent = new Intent(this, PairingActivity.class);
+            pairingIntent.putExtra(PairingActivity.EXTRA_PAIR_URL, url);
+            startActivity(pairingIntent);
+            finish();
+            return;
+        }
+        PairingStore store = new PairingStore(this);
+        PairingRecord stored = store.load();
+        String origin = DshPage.originOf(url);
+        if (stored != null && stored.origin.equals(origin)) {
+            pairingRecord = stored;
+            pairedOrigin = stored.origin;
+            pinnedCa = stored.caCertificate == null ? null : stored.caCertificate.clone();
+        }
+
         getWindow().setStatusBarColor(Color.BLACK);
         getWindow().setNavigationBarColor(Color.BLACK);
         setContentView(R.layout.activity_browser);
@@ -184,6 +207,11 @@ public final class BrowserActivity extends ComponentActivity {
         balanceHandler = new Handler(Looper.getMainLooper());
         balanceExecutor = Executors.newSingleThreadExecutor(runnable -> {
             Thread thread = new Thread(runnable, "dsh-balance");
+            thread.setDaemon(true);
+            return thread;
+        });
+        pairingExecutor = Executors.newSingleThreadExecutor(runnable -> {
+            Thread thread = new Thread(runnable, "dsh-pairing-session");
             thread.setDaemon(true);
             return thread;
         });
@@ -208,7 +236,47 @@ public final class BrowserActivity extends ComponentActivity {
 
         updateDshMode(url);
         loading.setVisibility(View.VISIBLE);
-        webView.loadUrl(url);
+        boolean sessionReady = getIntent().getBooleanExtra(EXTRA_SESSION_READY, false);
+        if (pairingRecord != null && !sessionReady) {
+            renewSessionAndLoad(url);
+        } else {
+            webView.loadUrl(url);
+        }
+    }
+
+    private void renewSessionAndLoad(String url) {
+        if (pairingRecord == null || pairingExecutor == null) {
+            showPairingExpired();
+            return;
+        }
+        pairingExecutor.execute(() -> {
+            try {
+                NativeAuthClient.Session session = NativeAuthClient.renew(pairingRecord);
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) {
+                        return;
+                    }
+                    SessionCookies.install(pairedOrigin, session,
+                            () -> {
+                                if (!isFinishing() && !isDestroyed() && webView != null) {
+                                    loading.setVisibility(View.VISIBLE);
+                                    webView.loadUrl(url);
+                                }
+                            },
+                            () -> showError(getString(R.string.pairing_cookie_failed)));
+                });
+            } catch (Exception e) {
+                runOnUiThread(this::showPairingExpired);
+            }
+        });
+    }
+
+    private void showPairingExpired() {
+        if (isFinishing() || isDestroyed()) {
+            return;
+        }
+        loading.setVisibility(View.GONE);
+        showError(getString(R.string.browser_pairing_expired));
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -321,9 +389,20 @@ public final class BrowserActivity extends ComponentActivity {
             }
         }
 
+        @SuppressLint("WebViewClientOnReceivedSslError")
         @Override
         public void onReceivedSslError(
                 WebView view, SslErrorHandler handler, SslError error) {
+            if (pinnedCa != null && pairedOrigin != null
+                    && error != null
+                    && error.getPrimaryError() == SslError.SSL_UNTRUSTED
+                    && PinnedTls.isPinnedAuthority(pairedOrigin, error.getUrl())) {
+                X509Certificate leaf = PinnedTls.leafFromSslCertificate(error.getCertificate());
+                if (PinnedTls.acceptsWebViewLeaf(pairedOrigin, pinnedCa, leaf)) {
+                    handler.proceed();
+                    return;
+                }
+            }
             handler.cancel();
             loading.setVisibility(View.GONE);
             showError(getString(R.string.ssl_error));
@@ -544,7 +623,8 @@ public final class BrowserActivity extends ComponentActivity {
             return;
         }
 
-        boolean entry = DshPage.isDshEntry(url);
+        boolean entry = DshPage.isDshEntry(url)
+                || (pairedOrigin != null && pairedOrigin.equals(currentOrigin));
         if (dshOrigin == null) {
             if (entry) {
                 dshOrigin = currentOrigin;
@@ -921,6 +1001,12 @@ public final class BrowserActivity extends ComponentActivity {
             finish();
             return;
         }
+        if (pairingRecord != null && pairedOrigin != null
+                && pairedOrigin.equals(DshPage.originOf(lastUrl))) {
+            loading.setVisibility(View.VISIBLE);
+            renewSessionAndLoad(lastUrl);
+            return;
+        }
         loading.setVisibility(View.VISIBLE);
         webView.loadUrl(lastUrl);
     }
@@ -1007,6 +1093,10 @@ public final class BrowserActivity extends ComponentActivity {
         if (balanceExecutor != null) {
             balanceExecutor.shutdownNow();
             balanceExecutor = null;
+        }
+        if (pairingExecutor != null) {
+            pairingExecutor.shutdownNow();
+            pairingExecutor = null;
         }
         if (filePathCallback != null) {
             filePathCallback.onReceiveValue(null);

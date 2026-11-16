@@ -50,4 +50,18 @@
     <string name="balance_label">余额</string>
     <string name="balance_unknown">--</string>
     <string name="balance_accessibility">余额 %1$s，%2$s时段</string>
+
+    <string name="pairing_overline">DSH MOBILE</string>
+    <string name="pairing_title">连接 DSH Mobile</string>
+    <string name="pairing_subtitle">正在验证电脑身份并完成设备配对，请保持网络连接。</string>
+    <string name="pairing_working">正在验证电脑证书…</string>
+    <string name="pairing_success">配对成功，正在打开 DSH…</string>
+    <string name="pairing_back_scan">返回扫码</string>
+    <string name="pairing_cancel">取消</string>
+    <string name="pairing_invalid_link">这不是有效的 DSH Mobile 配对二维码。</string>
+    <string name="pairing_storage_failed">无法安全保存配对信息，请重试。</string>
+    <string name="pairing_cookie_failed">无法写入登录状态，请重试。</string>
+    <string name="pairing_failed">配对失败</string>
+    <string name="browser_pairing_expired">配对已过期，请返回扫码重新配对。</string>
+    <string name="continue_last_device">继续连接上次电脑</string>
 </resources>
